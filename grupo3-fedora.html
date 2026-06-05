@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grupo 3 — Virtualización con Fedora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;
+    --bg2: #111318;
+    --bg3: #181c24;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --text: #e8eaf0;
+    --muted: #8b909e;
+    --accent: #4f9cf9;
+    --accent2: #7c3aed;
+    --green: #22c55e;
+    --amber: #f59e0b;
+    --red: #ef4444;
+    --fedora: #294172;
+    --fedora-light: #60a5fa;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    background: rgba(10,12,16,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 56px;
+  }
+  .nav-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+  .nav-logo span { color: var(--muted); font-weight: 400; }
+  nav ul { list-style:none; display:flex; gap:2rem; }
+  nav ul a {
+    color: var(--muted); text-decoration:none; font-size:13px;
+    font-weight: 500; letter-spacing:0.03em;
+    transition: color 0.2s;
+  }
+  nav ul a:hover { color: var(--text); }
+
+  /* SECTIONS */
+  section { padding: 5rem 0; }
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 2rem; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.5rem;
+  }
+  h2 {
+    font-size: 2rem; font-weight: 700;
+    line-height: 1.2; margin-bottom: 1rem;
+  }
+  h3 { font-size: 1.15rem; font-weight: 600; margin-bottom: 0.5rem; }
+  p { color: var(--muted); margin-bottom: 1rem; }
+
+  /* HERO */
+  #home {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(79,156,249,0.12) 0%, transparent 70%);
+    padding-top: 56px;
+  }
+  .hero-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(79,156,249,0.1); border: 1px solid rgba(79,156,249,0.25);
+    color: var(--accent); padding: 4px 12px; border-radius: 20px;
+    font-size: 12px; font-weight: 600; margin-bottom: 1.5rem;
+  }
+  .badge::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--accent); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .hero h1 {
+    font-size: 3rem; font-weight: 700; line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 em { font-style:normal; color: var(--accent); }
+  .hero p { font-size: 1.05rem; color: var(--muted); max-width: 480px; }
+  .hero-tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:1.5rem; }
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; padding: 4px 10px; border-radius: 4px;
+    background: var(--bg3); border: 1px solid var(--border2);
+    color: var(--muted);
+  }
+  .hero-visual {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 12px;
+    padding: 1.25rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; line-height: 1.8;
+    color: #7ee787;
+    overflow: hidden;
+  }
+  .hero-visual .prompt { color: var(--accent); }
+  .hero-visual .comment { color: #6e7681; }
+  .hero-visual .cmd { color: #e8eaf0; }
+  .terminal-bar {
+    display:flex; gap:6px; margin-bottom: 1rem; padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .dot { width:12px; height:12px; border-radius:50%; }
+  .dot-r{background:#ef4444;} .dot-y{background:#f59e0b;} .dot-g{background:#22c55e;}
+
+  /* CARDS */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover { border-color: var(--border2); transform: translateY(-2px); }
+  .card-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; margin-bottom: 1rem;
+  }
+
+  /* TEAM */
+  #equipo { background: var(--bg); }
+  .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+  .member-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.75rem 1.5rem;
+    text-align: center;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .member-card:hover { border-color: rgba(79,156,249,0.35); transform: translateY(-3px); }
+  .avatar {
+    width: 64px; height: 64px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 700; margin: 0 auto 1rem;
+    border: 2px solid var(--border2);
+  }
+  .member-card h3 { font-size: 1rem; margin-bottom: 0.25rem; }
+  .member-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .member-task {
+    font-size: 12px; color: var(--muted); margin-top: 0.75rem;
+    padding-top: 0.75rem; border-top: 1px solid var(--border);
+  }
+
+  /* COMPONENTS */
+  #componentes { background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%); }
+  .comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem; }
+  .comp-card {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.5rem;
+    transition: border-color 0.2s;
+  }
+  .comp-card:hover { border-color: var(--border2); }
+  .comp-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.5rem;
+  }
+
+  /* ARCH DIAGRAM */
+  .arch-diagram {
+    background: var(--bg2); border: 1px solid var(--border2);
+    border-radius: 12px; padding: 2rem; margin: 3rem 0;
+    overflow-x: auto;
+  }
+  .arch-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.12em; margin-bottom: 1.5rem;
+  }
+
+  /* COMMANDS */
+  .cmd-block {
+    background: #050709; border: 1px solid var(--border2);
+    border-radius: 8px; margin: 1rem 0; overflow: hidden;
+  }
+  .cmd-header {
+    background: var(--bg3); padding: 8px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted); letter-spacing: 0.05em;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .copy-btn {
+    background: none; border: 1px solid var(--border);
+    color: var(--muted); padding: 2px 8px; border-radius: 4px;
+    font-size: 10px; cursor: pointer; font-family: inherit;
+    transition: all 0.15s;
+  }
+  .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .cmd-body {
+    padding: 1rem 1.25rem; font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px; line-height: 1.9;
+  }
+  .cmd-body .ps { color: var(--green); } /* prompt symbol */
+  .cmd-body .flag { color: #ff9d5c; }
+  .cmd-body .str { color: #79c0ff; }
+  .cmd-body .comment { color: #6e7681; }
+  .cmd-body .out { color: #8b909e; }
+
+  /* SCREENSHOTS */
+  .screenshot-placeholder {
+    background: var(--bg3); border: 2px dashed var(--border2);
+    border-radius: 10px; height: 220px;
+    display: flex; flex-direction:column; align-items: center; justify-content: center;
+    gap: 10px; color: var(--muted); font-size: 13px;
+  }
+  .screenshot-placeholder svg { opacity: 0.3; }
+  .screenshot-placeholder p { margin:0; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+  /* CONCLUSIONS */
+  #conclusiones { background: var(--bg); }
+  .conclusion-list { display: grid; gap: 1rem; margin-top: 2rem; }
+  .conclusion-item {
+    display: flex; gap: 1rem; align-items: flex-start;
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1.25rem 1.5rem;
+  }
+  .conclusion-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; font-weight: 700; color: var(--accent);
+    min-width: 28px;
+  }
+  .conclusion-item h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.25rem; }
+  .conclusion-item p { margin: 0; font-size: 13.5px; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem; text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--muted);
+  }
+  footer span { color: var(--accent); }
+
+  /* DIVIDERS */
+  .divider {
+    width: 100%; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border2), transparent);
+    margin: 0;
+  }
+
+  /* ARCH SVG styles */
+  .arch-layer { font-family: 'JetBrains Mono', monospace; }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    .comp-grid { grid-template-columns: 1fr; }
+    h2 { font-size: 1.5rem; }
+    .hero h1 { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">grupo<span>_</span>3 <span>/ fedora-virt</span></div>
+  <ul>
+    <li><a href="#home">Home</a></li>
+    <li><a href="#equipo">Equipo</a></li>
+    <li><a href="#componentes">Componentes</a></li>
+    <li><a href="#conclusiones">Conclusiones</a></li>
+  </ul>
+</nav>
+
+<!-- HOME -->
+<section id="home">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero">
+        <div class="badge">Proyecto Final — Grupo 3</div>
+        <h1>Virtualización con <em>Fedora Linux</em></h1>
+        <p>Implementación y gestión de máquinas virtuales usando KVM/QEMU sobre Fedora. Exploración de hipervisores, redes virtuales y gestión de recursos del sistema.</p>
+        <div class="hero-tags">
+          <span class="tag">Fedora 40</span>
+          <span class="tag">KVM / QEMU</span>
+          <span class="tag">libvirt</span>
+          <span class="tag">virt-manager</span>
+          <span class="tag">Virtual Networking</span>
+          <span class="tag">Snapshots</span>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="terminal-bar">
+          <div class="dot dot-r"></div>
+          <div class="dot dot-y"></div>
+          <div class="dot dot-g"></div>
+        </div>
+        <span class="comment"># Verificar soporte de virtualización</span><br>
+        <span class="prompt">$ </span><span class="cmd">egrep -c '(vmx|svm)' /proc/cpuinfo</span><br>
+        8<br><br>
+        <span class="comment"># Instalar KVM y herramientas</span><br>
+        <span class="prompt">$ </span><span class="cmd">sudo dnf install @virtualization</span><br>
+        <span style="color:#8b909e">Installing: qemu-kvm libvirt virt-manager...</span><br><br>
+        <span class="comment"># Iniciar servicio libvirtd</span><br>
+        <span class="prompt">$ </span><span class="cmd">sudo systemctl enable --now libvirtd</span><br>
+        <span style="color:#22c55e">● libvirtd.service active (running)</span><br><br>
+        <span class="comment"># Listar VMs activas</span><br>
+        <span class="prompt">$ </span><span class="cmd">virsh list --all</span><br>
+        <span style="color:#8b909e"> Id   Name        State</span><br>
+        <span style="color:#8b909e">─────────────────────</span><br>
+        <span style="color:#22c55e"> 1    vm-web01    running</span><br>
+        <span style="color:#f59e0b"> -    vm-db01     shut off</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EQUIPO -->
+<section id="equipo">
+  <div class="container">
+    <div class="section-label">// equipo</div>
+    <h2>Integrantes del Grupo 3</h2>
+    <p>Estudiantes responsables del desarrollo, documentación e implementación del proyecto de virtualización.</p>
+
+    <div class="team-grid">
+      <div class="member-card">
+        <div class="avatar" style="background: rgba(79,156,249,0.15); color: #4f9cf9;">M1</div>
+        <h3>Angelica Mina</h3>
+        <div class="member-role">Componente 1</div>
+        <p class="member-task">Virtualización con Linux</p>
+      </div>
+      <div class="member-card">
+        <div class="avatar" style="background: rgba(124,58,237,0.15); color: #7c3aed;">M2</div>
+        <h3>Oriana Carmona</h3>
+        <div class="member-role">Componente 2</div>
+        <p class="member-task">Contenedores Docker</p>
+      </div>
+      <div class="member-card">
+        <div class="avatar" style="background: rgba(34,197,94,0.15); color: #22c55e;">M3</div>
+        <h3>Cristian Valencia</h3>
+        <div class="member-role">Componente 3</div>
+        <p class="member-task">Orquestación con Kubernetes</p>
+      </div>
+      <div class="member-card">
+        <div class="avatar" style="background: rgba(245,158,11,0.15); color: #f59e0b;">M4</div>
+        <h3>Isabela Hungria</h3>
+        <div class="member-role">Componente 4</div>
+        <p class="member-task">Sitio Web de Documentación</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- COMPONENTES -->
+<section id="componentes">
+  <div class="container">
+    <div class="section-label">// componentes</div>
+    <h2>Arquitectura y Componentes</h2>
+    <p>Descripción técnica de la infraestructura de virtualización implementada sobre Fedora Linux.</p>
+
+    <!-- ARCHITECTURE DIAGRAM -->
+    <div class="arch-diagram">
+      <div class="arch-title">// diagrama de arquitectura — virtualización kvm/qemu</div>
+      <svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:860px; display:block; margin:0 auto;">
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#4f9cf9" opacity="0.7"/>
+          </marker>
+        </defs>
+
+        <!-- Hardware layer -->
+        <rect x="20" y="360" width="860" height="44" rx="6" fill="#111318" stroke="#294172" stroke-width="1.5"/>
+        <text x="450" y="387" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#60a5fa" font-weight="700">HARDWARE FÍSICO — CPU (Intel VT-x / AMD-V)  ·  RAM  ·  Disco</text>
+
+        <!-- Fedora OS -->
+        <rect x="20" y="295" width="860" height="50" rx="6" fill="#0d1117" stroke="#294172" stroke-width="1.5"/>
+        <text x="80" y="318" font-family="JetBrains Mono, monospace" font-size="11" fill="#60a5fa" font-weight="700">FEDORA LINUX (HOST OS)</text>
+        <text x="80" y="333" font-family="JetBrains Mono, monospace" font-size="10" fill="#6e7681">Kernel con módulos kvm.ko · kvm-intel.ko / kvm-amd.ko</text>
+        <text x="600" y="326" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">libvirt daemon · D-Bus · SELinux</text>
+
+        <!-- KVM/QEMU -->
+        <rect x="30" y="230" width="260" height="50" rx="6" fill="#0f1a2e" stroke="#3b82f6" stroke-width="1.5"/>
+        <text x="160" y="252" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#60a5fa" font-weight="700">KVM (Hipervisor Tipo 1)</text>
+        <text x="160" y="268" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#6e7681">Módulo del kernel Linux</text>
+
+        <rect x="310" y="230" width="260" height="50" rx="6" fill="#1a1030" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="440" y="252" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#a78bfa" font-weight="700">QEMU (Emulador)</text>
+        <text x="440" y="268" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#6e7681">Emulación de hardware</text>
+
+        <rect x="590" y="230" width="260" height="50" rx="6" fill="#0d1f14" stroke="#22c55e" stroke-width="1.5"/>
+        <text x="720" y="252" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#4ade80" font-weight="700">virt-manager / virsh</text>
+        <text x="720" y="268" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#6e7681">Interfaz de gestión</text>
+
+        <!-- VMs -->
+        <rect x="30" y="90" width="196" height="116" rx="6" fill="#0a0c10" stroke="#3b82f6" stroke-width="1"/>
+        <text x="128" y="112" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#60a5fa" font-weight="700">VM #1</text>
+        <text x="128" y="128" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">SO: Ubuntu Server</text>
+        <text x="128" y="144" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">vCPU: 2  RAM: 2GB</text>
+        <text x="128" y="160" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">Disco: 20GB qcow2</text>
+        <text x="128" y="176" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#22c55e">● running</text>
+        <text x="128" y="195" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#4e9af1">Red: NAT</text>
+
+        <rect x="242" y="90" width="196" height="116" rx="6" fill="#0a0c10" stroke="#7c3aed" stroke-width="1"/>
+        <text x="340" y="112" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#a78bfa" font-weight="700">VM #2</text>
+        <text x="340" y="128" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">SO: Fedora Server</text>
+        <text x="340" y="144" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">vCPU: 2  RAM: 2GB</text>
+        <text x="340" y="160" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">Disco: 20GB qcow2</text>
+        <text x="340" y="176" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f59e0b">● shut off</text>
+        <text x="340" y="195" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#4e9af1">Red: Bridge</text>
+
+        <rect x="454" y="90" width="196" height="116" rx="6" fill="#0a0c10" stroke="#22c55e" stroke-width="1"/>
+        <text x="552" y="112" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#4ade80" font-weight="700">VM #3</text>
+        <text x="552" y="128" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">SO: Windows 10</text>
+        <text x="552" y="144" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">vCPU: 4  RAM: 4GB</text>
+        <text x="552" y="160" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">Disco: 40GB qcow2</text>
+        <text x="552" y="176" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#22c55e">● running</span></text>
+        <text x="552" y="195" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#4e9af1">Red: Bridge</text>
+
+        <rect x="666" y="90" width="196" height="116" rx="6" fill="#0a0c10" stroke="#f59e0b" stroke-width="1"/>
+        <text x="764" y="112" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#fbbf24" font-weight="700">VM #4</text>
+        <text x="764" y="128" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">SO: Debian</text>
+        <text x="764" y="144" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">vCPU: 1  RAM: 1GB</text>
+        <text x="764" y="160" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">Disco: 10GB qcow2</text>
+        <text x="764" y="176" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#8b909e">● paused</text>
+        <text x="764" y="195" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#4e9af1">Red: NAT</text>
+
+        <!-- Arrows VM → KVM -->
+        <line x1="128" y1="206" x2="128" y2="228" stroke="#4f9cf9" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr)"/>
+        <line x1="340" y1="206" x2="310" y2="228" stroke="#7c3aed" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr)"/>
+        <line x1="552" y1="206" x2="440" y2="228" stroke="#22c55e" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr)"/>
+        <line x1="764" y1="206" x2="720" y2="228" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr)"/>
+
+        <!-- Arrows layers -->
+        <line x1="160" y1="280" x2="160" y2="293" stroke="#4f9cf9" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="440" y1="280" x2="440" y2="293" stroke="#7c3aed" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="720" y1="280" x2="720" y2="293" stroke="#22c55e" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="450" y1="345" x2="450" y2="358" stroke="#60a5fa" stroke-width="1" marker-end="url(#arr)"/>
+
+        <!-- Label GUEST OS -->
+        <text x="450" y="76" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#6e7681" letter-spacing="2">MÁQUINAS VIRTUALES (GUEST OS)</text>
+      </svg>
+    </div>
+
+    <!-- Component cards -->
+    <div class="comp-grid">
+      <div class="comp-card">
+        <div class="comp-label">01 — hipervisor</div>
+        <h3>KVM + QEMU</h3>
+        <p>KVM (Kernel-based Virtual Machine) es el módulo del kernel que permite a Linux actuar como hipervisor tipo 1. QEMU emula el hardware virtual para cada VM.</p>
+        <div class="cmd-block">
+          <div class="cmd-header">verificar KVM <button class="copy-btn" onclick="copyCmd(this)">copiar</button></div>
+          <div class="cmd-body">
+            <span class="ps">$ </span>lsmod | grep kvm<br>
+            <span class="out">kvm_intel    458752  0</span><br>
+            <span class="out">kvm          999424  1 kvm_intel</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp-card">
+        <div class="comp-label">02 — gestión</div>
+        <h3>libvirt + virt-manager</h3>
+        <p>libvirt es la API estándar para gestionar VMs. virt-manager provee una interfaz gráfica. virsh es la herramienta de línea de comandos.</p>
+        <div class="cmd-block">
+          <div class="cmd-header">instalar todo <button class="copy-btn" onclick="copyCmd(this)">copiar</button></div>
+          <div class="cmd-body">
+            <span class="ps">$ </span>sudo dnf install <span class="flag">@virtualization</span><br>
+            <span class="ps">$ </span>sudo systemctl enable <span class="flag">--now</span> libvirtd<br>
+            <span class="ps">$ </span>sudo usermod <span class="flag">-aG</span> libvirt $USER
+          </div>
+        </div>
+      </div>
+
+      <div class="comp-card">
+        <div class="comp-label">03 — redes virtuales</div>
+        <h3>NAT y Bridge</h3>
+        <p>Se configuraron dos tipos de red: NAT para aislar las VMs del exterior, y Bridge para conectarlas directamente a la red física del host.</p>
+        <div class="cmd-block">
+          <div class="cmd-header">listar redes <button class="copy-btn" onclick="copyCmd(this)">copiar</button></div>
+          <div class="cmd-body">
+            <span class="ps">$ </span>virsh net-list <span class="flag">--all</span><br>
+            <span class="out"> Name      State    Autostart</span><br>
+            <span class="out"> default   active   yes</span><br>
+            <span class="out"> bridge0   active   yes</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp-card">
+        <div class="comp-label">04 — almacenamiento</div>
+        <h3>Imágenes qcow2 + Snapshots</h3>
+        <p>Los discos virtuales usan formato qcow2 que soporta snapshots, compresión y aprovisionamiento dinámico. Se crearon snapshots para restaurar estados anteriores.</p>
+        <div class="cmd-block">
+          <div class="cmd-header">crear snapshot <button class="copy-btn" onclick="copyCmd(this)">copiar</button></div>
+          <div class="cmd-body">
+            <span class="ps">$ </span>virsh snapshot-create-as <span class="str">vm-web01</span> <span class="str">"base-limpia"</span><br>
+            <span class="out">Domain snapshot base-limpia created</span><br>
+            <span class="ps">$ </span>virsh snapshot-list <span class="str">vm-web01</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screenshots section -->
+    <h3 style="margin-top:3rem; margin-bottom:1.5rem; color: var(--text);">Capturas de pantalla</h3>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:1rem;">
+      <div>
+        <div class="screenshot-placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#8b909e" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          <p>captura_01_virt-manager.png</p>
+          <p style="font-size:11px; color:#555">Reemplaza con tu captura</p>
+        </div>
+        <p style="font-size:12px; margin-top:0.5rem; color:var(--muted);">Panel principal de virt-manager con las VMs</p>
+      </div>
+      <div>
+        <div class="screenshot-placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#8b909e" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          <p>captura_02_virsh_list.png</p>
+          <p style="font-size:11px; color:#555">Reemplaza con tu captura</p>
+        </div>
+        <p style="font-size:12px; margin-top:0.5rem; color:var(--muted);">Salida de virsh list mostrando VMs activas</p>
+      </div>
+      <div>
+        <div class="screenshot-placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#8b909e" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          <p>captura_03_snapshot.png</p>
+          <p style="font-size:11px; color:#555">Reemplaza con tu captura</p>
+        </div>
+        <p style="font-size:12px; margin-top:0.5rem; color:var(--muted);">Creación y restauración de snapshot</p>
+      </div>
+    </div>
+    <p style="margin-top:1rem; font-size:12px; color:var(--muted);">
+      💡 Para agregar capturas reales: reemplaza el bloque <code style="background:var(--bg3); padding:2px 6px; border-radius:4px; font-size:11px;">.screenshot-placeholder</code> por <code style="background:var(--bg3); padding:2px 6px; border-radius:4px; font-size:11px;">&lt;img src="tu_captura.png" style="width:100%; border-radius:10px;"&gt;</code>
+    </p>
+
+    <!-- Main commands -->
+    <h3 style="margin-top:3rem; margin-bottom:1rem; color: var(--text);">Comandos principales</h3>
+
+    <div class="cmd-block">
+      <div class="cmd-header">gestión de VMs con virsh <button class="copy-btn" onclick="copyCmd(this)">copiar</button></div>
+      <div class="cmd-body">
+        <span class="comment"># Ver todas las VMs</span><br>
+        <span class="ps">$ </span>virsh list <span class="flag">--all</span><br><br>
+        <span class="comment"># Iniciar / detener una VM</span><br>
+        <span class="ps">$ </span>virsh start <span class="str">nombre-vm</span><br>
+        <span class="ps">$ </span>virsh shutdown <span class="str">nombre-vm</span><br>
+        <span class="ps">$ </span>virsh destroy <span class="str">nombre-vm</span> <span class="comment">  # forzar apagado</span><br><br>
+        <span class="comment"># Conectarse a la consola de una VM</span><br>
+        <span class="ps">$ </span>virsh console <span class="str">nombre-vm</span><br><br>
+        <span class="comment"># Ver información de una VM</span><br>
+        <span class="ps">$ </span>virsh dominfo <span class="str">nombre-vm</span>
+      </div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">crear una VM nueva con virt-install <button class="copy-btn" onclick="copyCmd(this)">copiar</button></div>
+      <div class="cmd-body">
+        <span class="ps">$ </span>virt-install \<br>
+        &nbsp;&nbsp;<span class="flag">--name</span> <span class="str">mi-nueva-vm</span> \<br>
+        &nbsp;&nbsp;<span class="flag">--ram</span> 2048 \<br>
+        &nbsp;&nbsp;<span class="flag">--vcpus</span> 2 \<br>
+        &nbsp;&nbsp;<span class="flag">--disk</span> path=/var/lib/libvirt/images/mi-vm.qcow2,size=20 \<br>
+        &nbsp;&nbsp;<span class="flag">--cdrom</span> /ruta/a/sistema.iso \<br>
+        &nbsp;&nbsp;<span class="flag">--network</span> network=default \<br>
+        &nbsp;&nbsp;<span class="flag">--graphics</span> vnc
+      </div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">snapshots y clonación <button class="copy-btn" onclick="copyCmd(this)">copiar</button></div>
+      <div class="cmd-body">
+        <span class="comment"># Crear snapshot</span><br>
+        <span class="ps">$ </span>virsh snapshot-create-as <span class="str">nombre-vm</span> <span class="str">"descripcion"</span><br><br>
+        <span class="comment"># Listar snapshots</span><br>
+        <span class="ps">$ </span>virsh snapshot-list <span class="str">nombre-vm</span><br><br>
+        <span class="comment"># Restaurar snapshot</span><br>
+        <span class="ps">$ </span>virsh snapshot-revert <span class="str">nombre-vm</span> <span class="str">"descripcion"</span><br><br>
+        <span class="comment"># Clonar una VM</span><br>
+        <span class="ps">$ </span>virt-clone <span class="flag">--original</span> <span class="str">nombre-vm</span> <span class="flag">--name</span> <span class="str">copia-vm</span> <span class="flag">--auto-clone</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONCLUSIONS -->
+<section id="conclusiones">
+  <div class="container">
+    <div class="section-label">// conclusiones</div>
+    <h2>Conclusiones del Proyecto</h2>
+    <p>Aprendizajes obtenidos durante la implementación y gestión del entorno de virtualización con Fedora.</p>
+
+    <div class="conclusion-list">
+      <div class="conclusion-item">
+        <div class="conclusion-num">01</div>
+        <div>
+          <h4>La virtualización optimiza el uso de recursos</h4>
+          <p>Con KVM pudimos ejecutar múltiples sistemas operativos en un único equipo físico, aprovechando al máximo la CPU y RAM disponibles sin necesidad de hardware adicional.</p>
+        </div>
+      </div>
+      <div class="conclusion-item">
+        <div class="conclusion-num">02</div>
+        <div>
+          <h4>Fedora como plataforma robusta de virtualización</h4>
+          <p>Fedora integra KVM y libvirt de forma nativa, lo que facilita la instalación y configuración. Su soporte para las últimas versiones del kernel garantiza compatibilidad con hardware reciente.</p>
+        </div>
+      </div>
+      <div class="conclusion-item">
+        <div class="conclusion-num">03</div>
+        <div>
+          <h4>Los snapshots son esenciales en entornos de prueba</h4>
+          <p>La capacidad de crear y restaurar snapshots nos permitió experimentar sin miedo a dañar la instalación base, acelerando el proceso de aprendizaje y las pruebas de configuración.</p>
+        </div>
+      </div>
+      <div class="conclusion-item">
+        <div class="conclusion-num">04</div>
+        <div>
+          <h4>Redes virtuales: flexibilidad y aislamiento</h4>
+          <p>Aprendimos a configurar distintos tipos de red (NAT y Bridge), entendiendo cuándo usar cada uno según si la VM necesita comunicarse con el exterior o solo con el host.</p>
+        </div>
+      </div>
+      <div class="conclusion-item">
+        <div class="conclusion-num">05</div>
+        <div>
+          <h4>Competencias aplicables al mundo real</h4>
+          <p>Las habilidades adquiridas en gestión de VMs con virsh y libvirt son directamente transferibles a entornos cloud (AWS, Azure, GCP) y de DevOps que usan tecnologías similares como contenedores y hipervisores.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>Grupo 3</span> — Proyecto Final · Virtualización con Fedora Linux · 2025
+</footer>
+
+<script>
+function copyCmd(btn) {
+  const body = btn.closest('.cmd-block').querySelector('.cmd-body');
+  const text = body.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ copiado';
+    setTimeout(() => btn.textContent = 'copiar', 1500);
+  });
+}
+</script>
+</body>
+</html>

@@ -282,6 +282,7 @@
   <ul>
     <li><a href="#home">Home</a></li>
     <li><a href="#equipo">Equipo</a></li>
+    <li><a href="#diagrama">Diagrama</a></li> 
     <li><a href="#componentes">Componentes</a></li>
     <li><a href="#conclusiones">Conclusiones</a></li>
   </ul>
@@ -296,12 +297,12 @@
         <h1>Virtualización con <em>Fedora Linux</em></h1>
         <p>Implementación y gestión de máquinas virtuales usando KVM/QEMU sobre Fedora. Exploración de hipervisores, redes virtuales y gestión de recursos del sistema.</p>
         <div class="hero-tags">
-          <span class="tag">Fedora 40</span>
-          <span class="tag">KVM / QEMU</span>
-          <span class="tag">libvirt</span>
-          <span class="tag">virt-manager</span>
-          <span class="tag">Virtual Networking</span>
-          <span class="tag">Snapshots</span>
+          <span class="tag">Fedora 44</span>
+          <span class="tag">VirtualBox</span>
+          <span class="tag">Docker</span>
+          <span class="tag">Kubernetes</span>
+          <span class="tag">SSH</span>
+          <span class="tag">GitHub</span>
         </div>
       </div>
       <div class="hero-visual">
@@ -310,21 +311,14 @@
           <div class="dot dot-y"></div>
           <div class="dot dot-g"></div>
         </div>
-        <span class="comment"># Verificar soporte de virtualización</span><br>
-        <span class="prompt">$ </span><span class="cmd">egrep -c '(vmx|svm)' /proc/cpuinfo</span><br>
-        8<br><br>
-        <span class="comment"># Instalar KVM y herramientas</span><br>
-        <span class="prompt">$ </span><span class="cmd">sudo dnf install @virtualization</span><br>
-        <span style="color:#8b909e">Installing: qemu-kvm libvirt virt-manager...</span><br><br>
-        <span class="comment"># Iniciar servicio libvirtd</span><br>
-        <span class="prompt">$ </span><span class="cmd">sudo systemctl enable --now libvirtd</span><br>
-        <span style="color:#22c55e">● libvirtd.service active (running)</span><br><br>
-        <span class="comment"># Listar VMs activas</span><br>
-        <span class="prompt">$ </span><span class="cmd">virsh list --all</span><br>
-        <span style="color:#8b909e"> Id   Name        State</span><br>
-        <span style="color:#8b909e">─────────────────────</span><br>
-        <span style="color:#22c55e"> 1    vm-web01    running</span><br>
-        <span style="color:#f59e0b"> -    vm-db01     shut off</span>
+        <span class="prompt">$ </span><span class="cmd">ip a</span><br>
+        <span class="comment"># Muestra las interfaces de red y las direcciones IP configuradas en el sistema.</span><br>
+        <span class="prompt">$ </span><span class="cmd">ping 192.168.100.237</span><br>
+        <span class="comment"># Verifica la conectividad entre dos equipos enviando paquetes de prueba a una dirección IP.</span><br>
+        <span class="prompt">$ </span><span class="cmd">ssh Ocarmona@192.168.100.237</span><br>
+        <span class="comment"># Establece una conexión remota segura con otro equipo utilizando el protocolo SSH.</span><br>
+        <span class="prompt">$ </span><span class="cmd">mkdir proyectoDocker</span><br>
+        <span class="comment"># Crea un directorio llamado proyectoDocker para almacenar los archivos del proyecto.</span><br>
       </div>
     </div>
   </div>
@@ -335,31 +329,29 @@
 <!-- EQUIPO -->
 <section id="equipo">
   <div class="container">
-    <div class="section-label">// equipo</div>
-    <h2>Integrantes del Grupo 3</h2>
-    <p>Estudiantes responsables del desarrollo, documentación e implementación del proyecto de virtualización.</p>
-
+    <h2>Integrantes</h2>
+    
     <div class="team-grid">
       <div class="member-card">
-        <div class="avatar" style="background: rgba(79,156,249,0.15); color: #4f9cf9;">M1</div>
-        <h3>Angelica Mina</h3>
+        <div class="avatar" style="background: rgba(79,156,249,0.15); color: #4f9cf9;">OC</div>
+        <h3>Oriana Carmona</h3>
         <div class="member-role">Componente 1</div>
         <p class="member-task">Virtualización con Linux</p>
       </div>
       <div class="member-card">
-        <div class="avatar" style="background: rgba(124,58,237,0.15); color: #7c3aed;">M2</div>
-        <h3>Oriana Carmona</h3>
+        <div class="avatar" style="background: rgba(124,58,237,0.15); color: #7c3aed;">AM</div>
+        <h3>Angelica Mina</h3>
         <div class="member-role">Componente 2</div>
         <p class="member-task">Contenedores Docker</p>
       </div>
       <div class="member-card">
-        <div class="avatar" style="background: rgba(34,197,94,0.15); color: #22c55e;">M3</div>
+        <div class="avatar" style="background: rgba(34,197,94,0.15); color: #22c55e;">CV</div>
         <h3>Cristian Valencia</h3>
         <div class="member-role">Componente 3</div>
         <p class="member-task">Orquestación con Kubernetes</p>
       </div>
       <div class="member-card">
-        <div class="avatar" style="background: rgba(245,158,11,0.15); color: #f59e0b;">M4</div>
+        <div class="avatar" style="background: rgba(245,158,11,0.15); color: #f59e0b;">IH</div>
         <h3>Isabela Hungria</h3>
         <div class="member-role">Componente 4</div>
         <p class="member-task">Sitio Web de Documentación</p>
@@ -371,242 +363,162 @@
 <div class="divider"></div>
 
 <!-- COMPONENTES -->
-<section id="componentes">
-  <div class="container">
-    <div class="section-label">// componentes</div>
-    <h2>Arquitectura y Componentes</h2>
-    <p>Descripción técnica de la infraestructura de virtualización implementada sobre Fedora Linux.</p>
-
-    <!-- ARCHITECTURE DIAGRAM -->
-    <div class="arch-diagram">
-      <div class="arch-title">// diagrama de arquitectura — virtualización kvm/qemu</div>
-      <svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:860px; display:block; margin:0 auto;">
-        <defs>
-          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-            <path d="M0,0 L0,6 L8,3 z" fill="#4f9cf9" opacity="0.7"/>
-          </marker>
-        </defs>
-
-        <!-- Hardware layer -->
-        <rect x="20" y="360" width="860" height="44" rx="6" fill="#111318" stroke="#294172" stroke-width="1.5"/>
-        <text x="450" y="387" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#60a5fa" font-weight="700">HARDWARE FÍSICO — CPU (Intel VT-x / AMD-V)  ·  RAM  ·  Disco</text>
-
-        <!-- Fedora OS -->
-        <rect x="20" y="295" width="860" height="50" rx="6" fill="#0d1117" stroke="#294172" stroke-width="1.5"/>
-        <text x="80" y="318" font-family="JetBrains Mono, monospace" font-size="11" fill="#60a5fa" font-weight="700">FEDORA LINUX (HOST OS)</text>
-        <text x="80" y="333" font-family="JetBrains Mono, monospace" font-size="10" fill="#6e7681">Kernel con módulos kvm.ko · kvm-intel.ko / kvm-amd.ko</text>
-        <text x="600" y="326" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">libvirt daemon · D-Bus · SELinux</text>
-
-        <!-- KVM/QEMU -->
-        <rect x="30" y="230" width="260" height="50" rx="6" fill="#0f1a2e" stroke="#3b82f6" stroke-width="1.5"/>
-        <text x="160" y="252" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#60a5fa" font-weight="700">KVM (Hipervisor Tipo 1)</text>
-        <text x="160" y="268" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#6e7681">Módulo del kernel Linux</text>
-
-        <rect x="310" y="230" width="260" height="50" rx="6" fill="#1a1030" stroke="#7c3aed" stroke-width="1.5"/>
-        <text x="440" y="252" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#a78bfa" font-weight="700">QEMU (Emulador)</text>
-        <text x="440" y="268" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#6e7681">Emulación de hardware</text>
-
-        <rect x="590" y="230" width="260" height="50" rx="6" fill="#0d1f14" stroke="#22c55e" stroke-width="1.5"/>
-        <text x="720" y="252" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#4ade80" font-weight="700">virt-manager / virsh</text>
-        <text x="720" y="268" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#6e7681">Interfaz de gestión</text>
-
-        <!-- VMs -->
-        <rect x="30" y="90" width="196" height="116" rx="6" fill="#0a0c10" stroke="#3b82f6" stroke-width="1"/>
-        <text x="128" y="112" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#60a5fa" font-weight="700">VM #1</text>
-        <text x="128" y="128" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">SO: Ubuntu Server</text>
-        <text x="128" y="144" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">vCPU: 2  RAM: 2GB</text>
-        <text x="128" y="160" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">Disco: 20GB qcow2</text>
-        <text x="128" y="176" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#22c55e">● running</text>
-        <text x="128" y="195" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#4e9af1">Red: NAT</text>
-
-        <rect x="242" y="90" width="196" height="116" rx="6" fill="#0a0c10" stroke="#7c3aed" stroke-width="1"/>
-        <text x="340" y="112" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#a78bfa" font-weight="700">VM #2</text>
-        <text x="340" y="128" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">SO: Fedora Server</text>
-        <text x="340" y="144" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">vCPU: 2  RAM: 2GB</text>
-        <text x="340" y="160" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">Disco: 20GB qcow2</text>
-        <text x="340" y="176" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f59e0b">● shut off</text>
-        <text x="340" y="195" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#4e9af1">Red: Bridge</text>
-
-        <rect x="454" y="90" width="196" height="116" rx="6" fill="#0a0c10" stroke="#22c55e" stroke-width="1"/>
-        <text x="552" y="112" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#4ade80" font-weight="700">VM #3</text>
-        <text x="552" y="128" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">SO: Windows 10</text>
-        <text x="552" y="144" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">vCPU: 4  RAM: 4GB</text>
-        <text x="552" y="160" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">Disco: 40GB qcow2</text>
-        <text x="552" y="176" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#22c55e">● running</span></text>
-        <text x="552" y="195" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#4e9af1">Red: Bridge</text>
-
-        <rect x="666" y="90" width="196" height="116" rx="6" fill="#0a0c10" stroke="#f59e0b" stroke-width="1"/>
-        <text x="764" y="112" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#fbbf24" font-weight="700">VM #4</text>
-        <text x="764" y="128" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">SO: Debian</text>
-        <text x="764" y="144" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">vCPU: 1  RAM: 1GB</text>
-        <text x="764" y="160" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b909e">Disco: 10GB qcow2</text>
-        <text x="764" y="176" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#8b909e">● paused</text>
-        <text x="764" y="195" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#4e9af1">Red: NAT</text>
-
-        <!-- Arrows VM → KVM -->
-        <line x1="128" y1="206" x2="128" y2="228" stroke="#4f9cf9" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr)"/>
-        <line x1="340" y1="206" x2="310" y2="228" stroke="#7c3aed" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr)"/>
-        <line x1="552" y1="206" x2="440" y2="228" stroke="#22c55e" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr)"/>
-        <line x1="764" y1="206" x2="720" y2="228" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr)"/>
-
-        <!-- Arrows layers -->
-        <line x1="160" y1="280" x2="160" y2="293" stroke="#4f9cf9" stroke-width="1" marker-end="url(#arr)"/>
-        <line x1="440" y1="280" x2="440" y2="293" stroke="#7c3aed" stroke-width="1" marker-end="url(#arr)"/>
-        <line x1="720" y1="280" x2="720" y2="293" stroke="#22c55e" stroke-width="1" marker-end="url(#arr)"/>
-        <line x1="450" y1="345" x2="450" y2="358" stroke="#60a5fa" stroke-width="1" marker-end="url(#arr)"/>
-
-        <!-- Label GUEST OS -->
-        <text x="450" y="76" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#6e7681" letter-spacing="2">MÁQUINAS VIRTUALES (GUEST OS)</text>
-      </svg>
-    </div>
-
-    <!-- Component cards -->
-    <div class="comp-grid">
-      <div class="comp-card">
-        <div class="comp-label">01 — hipervisor</div>
-        <h3>KVM + QEMU</h3>
-        <p>KVM (Kernel-based Virtual Machine) es el módulo del kernel que permite a Linux actuar como hipervisor tipo 1. QEMU emula el hardware virtual para cada VM.</p>
-        <div class="cmd-block">
-          <div class="cmd-header">verificar KVM <button class="copy-btn" onclick="copyCmd(this)">copiar</button></div>
-          <div class="cmd-body">
-            <span class="ps">$ </span>lsmod | grep kvm<br>
-            <span class="out">kvm_intel    458752  0</span><br>
-            <span class="out">kvm          999424  1 kvm_intel</span>
-          </div>
+ <section id="diagrama" style="padding: 2rem 0;">
+    <div class="container">
         </div>
-      </div>
-
-      <div class="comp-card">
-        <div class="comp-label">02 — gestión</div>
-        <h3>libvirt + virt-manager</h3>
-        <p>libvirt es la API estándar para gestionar VMs. virt-manager provee una interfaz gráfica. virsh es la herramienta de línea de comandos.</p>
-        <div class="cmd-block">
-          <div class="cmd-header">instalar todo <button class="copy-btn" onclick="copyCmd(this)">copiar</button></div>
-          <div class="cmd-body">
-            <span class="ps">$ </span>sudo dnf install <span class="flag">@virtualization</span><br>
-            <span class="ps">$ </span>sudo systemctl enable <span class="flag">--now</span> libvirtd<br>
-            <span class="ps">$ </span>sudo usermod <span class="flag">-aG</span> libvirt $USER
-          </div>
-        </div>
-      </div>
-
-      <div class="comp-card">
-        <div class="comp-label">03 — redes virtuales</div>
-        <h3>NAT y Bridge</h3>
-        <p>Se configuraron dos tipos de red: NAT para aislar las VMs del exterior, y Bridge para conectarlas directamente a la red física del host.</p>
-        <div class="cmd-block">
-          <div class="cmd-header">listar redes <button class="copy-btn" onclick="copyCmd(this)">copiar</button></div>
-          <div class="cmd-body">
-            <span class="ps">$ </span>virsh net-list <span class="flag">--all</span><br>
-            <span class="out"> Name      State    Autostart</span><br>
-            <span class="out"> default   active   yes</span><br>
-            <span class="out"> bridge0   active   yes</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="comp-card">
-        <div class="comp-label">04 — almacenamiento</div>
-        <h3>Imágenes qcow2 + Snapshots</h3>
-        <p>Los discos virtuales usan formato qcow2 que soporta snapshots, compresión y aprovisionamiento dinámico. Se crearon snapshots para restaurar estados anteriores.</p>
-        <div class="cmd-block">
-          <div class="cmd-header">crear snapshot <button class="copy-btn" onclick="copyCmd(this)">copiar</button></div>
-          <div class="cmd-body">
-            <span class="ps">$ </span>virsh snapshot-create-as <span class="str">vm-web01</span> <span class="str">"base-limpia"</span><br>
-            <span class="out">Domain snapshot base-limpia created</span><br>
-            <span class="ps">$ </span>virsh snapshot-list <span class="str">vm-web01</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Screenshots section -->
-    <h3 style="margin-top:3rem; margin-bottom:1.5rem; color: var(--text);">Capturas de pantalla</h3>
-    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:1rem;">
-      <div>
-        <div class="screenshot-placeholder">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#8b909e" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-          <p>captura_01_virt-manager.png</p>
-          <p style="font-size:11px; color:#555">Reemplaza con tu captura</p>
-        </div>
-        <p style="font-size:12px; margin-top:0.5rem; color:var(--muted);">Panel principal de virt-manager con las VMs</p>
-      </div>
-      <div>
-        <div class="screenshot-placeholder">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#8b909e" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-          <p>captura_02_virsh_list.png</p>
-          <p style="font-size:11px; color:#555">Reemplaza con tu captura</p>
-        </div>
-        <p style="font-size:12px; margin-top:0.5rem; color:var(--muted);">Salida de virsh list mostrando VMs activas</p>
-      </div>
-      <div>
-        <div class="screenshot-placeholder">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#8b909e" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-          <p>captura_03_snapshot.png</p>
-          <p style="font-size:11px; color:#555">Reemplaza con tu captura</p>
-        </div>
-        <p style="font-size:12px; margin-top:0.5rem; color:var(--muted);">Creación y restauración de snapshot</p>
-      </div>
-    </div>
-    <p style="margin-top:1rem; font-size:12px; color:var(--muted);">
-      💡 Para agregar capturas reales: reemplaza el bloque <code style="background:var(--bg3); padding:2px 6px; border-radius:4px; font-size:11px;">.screenshot-placeholder</code> por <code style="background:var(--bg3); padding:2px 6px; border-radius:4px; font-size:11px;">&lt;img src="tu_captura.png" style="width:100%; border-radius:10px;"&gt;</code>
-    </p>
-
-    <!-- Main commands -->
-    <h3 style="margin-top:3rem; margin-bottom:1rem; color: var(--text);">Comandos principales</h3>
-
-    <div class="cmd-block">
-      <div class="cmd-header">gestión de VMs con virsh <button class="copy-btn" onclick="copyCmd(this)">copiar</button></div>
-      <div class="cmd-body">
-        <span class="comment"># Ver todas las VMs</span><br>
-        <span class="ps">$ </span>virsh list <span class="flag">--all</span><br><br>
-        <span class="comment"># Iniciar / detener una VM</span><br>
-        <span class="ps">$ </span>virsh start <span class="str">nombre-vm</span><br>
-        <span class="ps">$ </span>virsh shutdown <span class="str">nombre-vm</span><br>
-        <span class="ps">$ </span>virsh destroy <span class="str">nombre-vm</span> <span class="comment">  # forzar apagado</span><br><br>
-        <span class="comment"># Conectarse a la consola de una VM</span><br>
-        <span class="ps">$ </span>virsh console <span class="str">nombre-vm</span><br><br>
-        <span class="comment"># Ver información de una VM</span><br>
-        <span class="ps">$ </span>virsh dominfo <span class="str">nombre-vm</span>
-      </div>
-    </div>
-
-    <div class="cmd-block">
-      <div class="cmd-header">crear una VM nueva con virt-install <button class="copy-btn" onclick="copyCmd(this)">copiar</button></div>
-      <div class="cmd-body">
-        <span class="ps">$ </span>virt-install \<br>
-        &nbsp;&nbsp;<span class="flag">--name</span> <span class="str">mi-nueva-vm</span> \<br>
-        &nbsp;&nbsp;<span class="flag">--ram</span> 2048 \<br>
-        &nbsp;&nbsp;<span class="flag">--vcpus</span> 2 \<br>
-        &nbsp;&nbsp;<span class="flag">--disk</span> path=/var/lib/libvirt/images/mi-vm.qcow2,size=20 \<br>
-        &nbsp;&nbsp;<span class="flag">--cdrom</span> /ruta/a/sistema.iso \<br>
-        &nbsp;&nbsp;<span class="flag">--network</span> network=default \<br>
-        &nbsp;&nbsp;<span class="flag">--graphics</span> vnc
-      </div>
-    </div>
-
-    <div class="cmd-block">
-      <div class="cmd-header">snapshots y clonación <button class="copy-btn" onclick="copyCmd(this)">copiar</button></div>
-      <div class="cmd-body">
-        <span class="comment"># Crear snapshot</span><br>
-        <span class="ps">$ </span>virsh snapshot-create-as <span class="str">nombre-vm</span> <span class="str">"descripcion"</span><br><br>
-        <span class="comment"># Listar snapshots</span><br>
-        <span class="ps">$ </span>virsh snapshot-list <span class="str">nombre-vm</span><br><br>
-        <span class="comment"># Restaurar snapshot</span><br>
-        <span class="ps">$ </span>virsh snapshot-revert <span class="str">nombre-vm</span> <span class="str">"descripcion"</span><br><br>
-        <span class="comment"># Clonar una VM</span><br>
-        <span class="ps">$ </span>virt-clone <span class="flag">--original</span> <span class="str">nombre-vm</span> <span class="flag">--name</span> <span class="str">copia-vm</span> <span class="flag">--auto-clone</span>
-      </div>
-    </div>
-  </div>
 </section>
 
-<div class="divider"></div>
+  <div class="container">
+    <h2>Diagrama del proyecto</h2>
+
+    <div class="arch-diagram" style="background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin: 2rem 0; font-family: 'JetBrains Mono', monospace; display: flex; flex-direction: column; align-items: center;">
+    
+    <div style="border: 2px solid var(--accent); padding: 12px 20px; border-radius: 8px; color: var(--accent); font-weight: bold; text-align: center;">
+        Computador físico
+    </div>
+
+    <div style="color: var(--muted); font-size: 20px; margin: 5px 0;">↓</div>
+
+    <div style="border: 2px solid var(--accent2); padding: 12px 20px; border-radius: 8px; color: var(--accent2); font-weight: bold; text-align: center; margin-bottom: 25px; min-width: 150px;">
+        VirtualBox
+    </div>
+
+    <div style="width: 2px; height: 20px; background: var(--border2); margin-top: -25px; margin-bottom: 0px;"></div>
+    <div style="width: 50%; height: 2px; background: var(--border2); margin-bottom: 20px;"></div>
+
+    <div style="display: flex; justify-content: center; gap: 2rem; width: 100%; max-width: 700px;">
+        
+        <div style="border: 1px solid var(--border2); padding: 15px; border-radius: 8px; flex: 1;">
+            <div style="color: var(--accent2); font-size: 0.85em; margin-bottom: 0.5rem; text-align: center;">Fedora Workstation 44</div>
+            <ul style="list-style: none; font-size: 0.75em; color: var(--muted); padding-left: 10px;">
+                <li>➜ Docker</li>
+                <li>➜ Tailscale</li>
+                <li>➜ Kubernetes</li>
+            </ul>
+        </div>
+
+        <div style="border: 1px solid var(--border2); padding: 15px; border-radius: 8px; flex: 1;">
+            <div style="color: var(--accent2); font-size: 0.85em; margin-bottom: 0.5rem; text-align: center;">Fedora Server 44</div>
+            <ul style="list-style: none; font-size: 0.75em; color: var(--muted); padding-left: 10px;">
+                <li>➜ SSH</li>
+                <li>➜ Red Bridged</li>
+                <li>➜ Particiones</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    <!-- Screenshots and components section -->
+     <section id="componentes">
+  <div class="container">
+    
+    <h3 style="margin-top:3rem; margin-bottom:1.5rem; color: var(--text);">Componente 1 ➜ Virtualización con Linux</h3>
+    <p style="font-size: 13.5px; color: var(--muted);">Se implementó un entorno virtualizado utilizando VirtualBox con dos máquinas virtuales Fedora 44: Fedora Workstation y Fedora Server. Se realizó la configuración manual de particiones, la configuración de red en modo Bridged, la verificación de conectividad mediante ping, la identificación de direcciones IP con ip a y el acceso remoto seguro entre las máquinas utilizando SSH. Finalmente, se verificó la estructura de discos y particiones mediante lsblk.</p>
+    <details style="background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1rem;">
+      <summary style="cursor: pointer; color: var(--accent);">Capturas de virtualización ▼</summary>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 15px;">
+        <img src="img/img_virt_/1_virtualización.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_virt_/2_virtualización.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_virt_/3_virtualización.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_virt_/4_virtualización.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_virt_/5_virtualización.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_virt_/6_virtualización.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_virt_/7_virtualización.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_virt_/8_virtualización.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_virt_/9_virtualización.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_virt_/10_virtualización.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_virt_/11_virtualización.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_virt_/12_virtualización.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_virt_/13_virtualización.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_virt_/14_virtualización.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_virt_/15_virtualización.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_virt_/16_virtualización.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_virt_/17_virtualización.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_virt_/18_virtualización.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_virt_/19_virtualización.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_virt_/20_virtualización.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_virt_/21_virtualización.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_virt_/22_virtualización.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_virt_/23_virtualización.png" style="width:100%; border-radius:4px;">
+      </div>
+    </details>
+
+<div style="margin-top: 1rem;">
+    <a href="https://youtu.be/MiIzHv5yRqA" target="_blank" style="color: var(--accent); font-size: 13px; text-decoration: none;">
+        ▶ Video de las evidencias
+    </a>
+</div>
+
+  <!--Component 2-->
+  <h3 style="margin-top:3rem; margin-bottom:1.5rem; color: var(--text);">Componente 2 ➜ Contenedores Docker</h3>
+    <p style="font-size: 13.5px; color: var(--muted);">En esta actividad trabajamos con Linux y aprendimos a usar Docker. Primero abrimos la terminal y utilizamos varios comandos para crear carpetas y organizar el proyecto. Después creamos un pequeño servidor para comprobar que todo funcionara correctamente.
+Lo más importante fue entender para qué sirve Docker. Docker permite guardar una aplicación junto con todo lo que necesita para funcionar, de manera que pueda ejecutarse en otros computadores sin presentar errores o problemas de configuración.
+En la vida real esto es muy útil porque las empresas necesitan que sus programas funcionen igual para todos los usuarios. Por ejemplo, cuando usamos aplicaciones como Netflix, plataformas de compras o servicios bancarios, detrás de ellas se utilizan herramientas que ayudan a que los sistemas funcionen de forma organizada y estable.</p>
+    <details style="background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1rem;">
+      <summary style="cursor: pointer; color: var(--accent);">Capturas de Docker ▼</summary>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 15px;">
+        <img src="img/img_docker_/docker_1.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_2.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_3.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_4.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_5.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_6.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_7.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_8.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_9.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_10.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_11.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_12.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_13.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_14.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_15.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_16.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_17.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_18.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_19.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_20.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_21.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_22.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_23.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_24.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_25.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_26.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_27.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_28.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_29.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_30.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_31.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_32.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_33.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_34.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_35.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_docker_/docker_36.png" style="width:100%; border-radius:4px;">
+      </div>
+    </details>
+    
+    <!--Component 3-->
+    <h3 style="margin-top:3rem; margin-bottom:1.5rem; color: var(--text);">Componente 3 ➜ Orquestación con Kubernetes</h3>
+    <p style="font-size: 13.5px; color: var(--muted);">Descripción del componente 3...</p>
+    <details style="background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1rem;">
+      <summary style="cursor: pointer; color: var(--accent);">Capturas de kubernetes ▼</summary>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 15px;">
+        <img src="img/img_kbt_/kubernetes_1.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_kbt_/kubernetes_2.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_kbt_/kubernetes_3.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_kbt_/kubernetes_4.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_kbt_/kubernetes_5.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_kbt_/kubernetes_6.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_kbt_/kubernetes_7.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_kbt_/kubernetes_8.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_kbt_/kubernetes_9.png" style="width:100%; border-radius:4px;">
+        <img src="img/img_kbt_/kubernetes_10.png" style="width:100%; border-radius:4px;">
+      </div>
+    </details>
+    
 
 <!-- CONCLUSIONS -->
 <section id="conclusiones">
   <div class="container">
-    <div class="section-label">// conclusiones</div>
     <h2>Conclusiones del Proyecto</h2>
     <p>Aprendizajes obtenidos durante la implementación y gestión del entorno de virtualización con Fedora.</p>
 
@@ -614,36 +526,37 @@
       <div class="conclusion-item">
         <div class="conclusion-num">01</div>
         <div>
-          <h4>La virtualización optimiza el uso de recursos</h4>
-          <p>Con KVM pudimos ejecutar múltiples sistemas operativos en un único equipo físico, aprovechando al máximo la CPU y RAM disponibles sin necesidad de hardware adicional.</p>
+          <p>La virtualización permitió crear entornos independientes y seguros, facilitando la instalación y administración de sistemas operativos sin afectar el equipo.</p>
         </div>
       </div>
       <div class="conclusion-item">
         <div class="conclusion-num">02</div>
         <div>
-          <h4>Fedora como plataforma robusta de virtualización</h4>
-          <p>Fedora integra KVM y libvirt de forma nativa, lo que facilita la instalación y configuración. Su soporte para las últimas versiones del kernel garantiza compatibilidad con hardware reciente.</p>
+          <p>La configuración de red y SSH permitió la administración eficiente de servidores desde otra máquina.</p>
         </div>
       </div>
       <div class="conclusion-item">
         <div class="conclusion-num">03</div>
         <div>
-          <h4>Los snapshots son esenciales en entornos de prueba</h4>
-          <p>La capacidad de crear y restaurar snapshots nos permitió experimentar sin miedo a dañar la instalación base, acelerando el proceso de aprendizaje y las pruebas de configuración.</p>
+          <p>Docker simplificó el despliegue de aplicaciones, garantizando que el software funcione de manera consistente en diferentes entornos.</p>
         </div>
       </div>
       <div class="conclusion-item">
         <div class="conclusion-num">04</div>
         <div>
-          <h4>Redes virtuales: flexibilidad y aislamiento</h4>
-          <p>Aprendimos a configurar distintos tipos de red (NAT y Bridge), entendiendo cuándo usar cada uno según si la VM necesita comunicarse con el exterior o solo con el host.</p>
+          <p>El uso de contenedores mejoró la portabilidad y organización del proyecto, facilitando la distribución de aplicaciones y servicios.</p>
         </div>
       </div>
       <div class="conclusion-item">
         <div class="conclusion-num">05</div>
         <div>
-          <h4>Competencias aplicables al mundo real</h4>
-          <p>Las habilidades adquiridas en gestión de VMs con virsh y libvirt son directamente transferibles a entornos cloud (AWS, Azure, GCP) y de DevOps que usan tecnologías similares como contenedores y hipervisores.</p>
+          <p>Kubernetes permitió comprender los conceptos de orquestación, automatizando la gestión y administración de contenedores.</p>
+        </div>
+      </div>
+       <div class="conclusion-item">
+        <div class="conclusion-num">06</div>
+        <div>
+          <p>El proyecto fortaleció las habilidades prácticas del equipo en administración de sistemas Linux, virtualización, redes, contenedores y trabajo colaborativo.</p>
         </div>
       </div>
     </div>
@@ -651,7 +564,7 @@
 </section>
 
 <footer>
-  <span>Grupo 3</span> — Proyecto Final · Virtualización con Fedora Linux · 2025
+  <span>Grupo 3</span> — Proyecto Final · Virtualización con Fedora Linux · 2026
 </footer>
 
 <script>

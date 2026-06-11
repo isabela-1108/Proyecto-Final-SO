@@ -295,7 +295,7 @@
       <div class="hero">
         <div class="badge">Proyecto Final — Grupo 3</div>
         <h1>Virtualización con <em>Fedora Linux</em></h1>
-        <p>Implementación y gestión de máquinas virtuales usando KVM/QEMU sobre Fedora. Exploración de hipervisores, redes virtuales y gestión de recursos del sistema.</p>
+        <p>Documentación del proyecto final sobre virtualización y contenedores realizada por el Grupo 3 usando Fedora 44.</p>
         <div class="hero-tags">
           <span class="tag">Fedora 44</span>
           <span class="tag">VirtualBox</span>
@@ -498,7 +498,10 @@ En la vida real esto es muy útil porque las empresas necesitan que sus programa
     
     <!--Component 3-->
     <h3 style="margin-top:3rem; margin-bottom:1.5rem; color: var(--text);">Componente 3 ➜ Orquestación con Kubernetes</h3>
-    <p style="font-size: 13.5px; color: var(--muted);">Descripción del componente 3...</p>
+    <p style="font-size: 13.5px; color: var(--muted);">En este componente se implementó la orquestación de contenedores utilizando Minikube como entorno local de Kubernetes, instalado sobre la distribución Linux gráfica asignada al grupo.
+Se crearon dos manifiestos YAML: un Deployment que define el despliegue de la imagen oficial de Nginx con 2 réplicas iniciales, garantizando alta disponibilidad del servicio, y un Service de tipo NodePort que expone el contenedor hacia el exterior del clúster, permitiendo el acceso desde el navegador mediante una dirección IP y puerto asignado.
+Una vez desplegado el servicio y verificado su correcto funcionamiento a través del navegador, se realizó un escalado manual a 3 réplicas usando el comando kubectl scale, demostrando la capacidad de Kubernetes para ajustar dinámicamente los recursos según la demanda sin interrumpir el servicio.
+Durante todo el proceso se utilizaron comandos como kubectl get pods, kubectl get svc y kubectl get deployments para monitorear el estado del clúster y confirmar que todos los componentes estaban operando correctamente.</p>
     <details style="background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1rem;">
       <summary style="cursor: pointer; color: var(--accent);">Capturas de kubernetes ▼</summary>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 15px;">
